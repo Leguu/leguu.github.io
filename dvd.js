@@ -24,16 +24,17 @@ class DVD {
 	}
 
 	update_position() {
-		this.x += this.x_speed;
-		this.y += this.y_speed;
-
 		if (this.x < 0 || this.x + this.x_size > this.canvas.width) {
+			this.x -= this.x_speed;
 			this.direction = Math.PI - this.direction;
 			this.update_speed();
 		} else if (this.y < 0 || this.y + this.y_size > this.canvas.height) {
+			this.y -= this.y_speed;
 			this.direction -= this.direction * 2;
 			this.update_speed();
 		}
+		this.x += this.x_speed;
+		this.y += this.y_speed;
 	}
 
 	update_speed() {
