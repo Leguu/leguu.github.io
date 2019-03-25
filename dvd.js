@@ -9,6 +9,7 @@ class DVD {
 
 		this.image = new Image;
 		this.image.src = "https://upload.wikimedia.org/wikipedia/en/1/18/Dvd-video-logo.svg";
+
 		this.x_size = 100;
 		this.y_size = 100;
 
@@ -16,8 +17,9 @@ class DVD {
 		this.y = Math.random() * (this.canvas.height - this.y_size);
 	}
 
-	draw_frame() {
-		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	run() {
+		this.context.clearRect(this.x, this.y, this.x_size, this.y_size);
+		this.update_position();
 		this.context.drawImage(this.image, this.x, this.y, this.x_size, this.y_size);
 	}
 
@@ -25,21 +27,13 @@ class DVD {
 		this.x += this.x_speed;
 		this.y += this.y_speed;
 
-		if (this.x_out_of_bounds()) {
+		if (this.x < 0 || this.x + this.x_size > this.canvas.width) {
 			this.direction = Math.PI - this.direction;
-		} else if (this.y_out_of_bounds()) {
+			this.update_speed();
+		} else if (this.y < 0 || this.y + this.y_size > this.canvas.height) {
 			this.direction -= this.direction * 2;
+			this.update_speed();
 		}
-
-		this.update_speed();
-	}
-
-	x_out_of_bounds() {
-		return this.x < 0 || this.x + this.x_size > this.canvas.width;
-	}
-
-	y_out_of_bounds() {
-		return this.y < 0 || this.y + this.y_size > this.canvas.height;
 	}
 
 	update_speed() {
@@ -48,11 +42,10 @@ class DVD {
 	}
 }
 
+var dvd = new DVD(document.getElementById("dvdCanvas"));
 function loop() {
 	window.requestAnimationFrame(loop);
-	dvd.update_position();
-	dvd.draw_frame();
+	dvd.run();
 }
 
-var dvd = new DVD(document.getElementById("dvdCanvas"));
 loop();
