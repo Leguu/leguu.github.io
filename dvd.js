@@ -42,7 +42,7 @@ class DigitalVersatileDisc {
 var dvd = new DigitalVersatileDisc(document.getElementById("dvdCanvas"));
 function loop() {
     window.requestAnimationFrame(loop);
-    dvd.run();
+    dvd.draw_frame();
 }
 
 loop();
