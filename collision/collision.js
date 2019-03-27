@@ -160,7 +160,7 @@ class GameManager {
         document.getElementById("maxEnemies").innerHTML = `Max score: ${Math.floor(max_enemies)}`;
         for(let i = 0; i < max_enemies; i++) this.enemies.push(new Enemy(canvas_name));
 
-        this.player = new Player(canvas_name33);
+        this.player = new Player(canvas_name);
     }
 
     is_colliding(entity1, entity2) {
