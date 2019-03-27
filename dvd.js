@@ -29,7 +29,7 @@ class DigitalVersatileDisc {
             this.update_speed(this.direction - (this.direction * 2));
         }
         this.x += this.x_speed;
-        this.y -= this.y_speed;
+        this.y += this.y_speed;
     }
 
     update_speed(direction) {
