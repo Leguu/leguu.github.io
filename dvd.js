@@ -1,7 +1,7 @@
 class DigitalVersatileDisc {
-    constructor(canvas) {
-        this.canvas = canvas;
-        this.context = canvas.getContext("2d");
+    constructor(canvas_name) {
+        this.canvas = document.getElementById(canvas_name);
+        this.context = this.canvas.getContext("2d");
 
         this.speed = 3;
         this.update_speed(Math.random() * (2 * Math.PI));
@@ -10,8 +10,8 @@ class DigitalVersatileDisc {
         this.image.src = "https://upload.wikimedia.org/wikipedia/en/1/18/Dvd-video-logo.svg";
 
         this.x_size = this.y_size = 100;
-        this.x = Math.random() * (canvas.width - this.x_size);
-        this.y = Math.random() * (canvas.height - this.y_size);
+        this.x = Math.random() * (this.canvas.width - this.x_size);
+        this.y = Math.random() * (this.canvas.height - this.y_size);
     }
 
     draw_frame() {
@@ -39,7 +39,8 @@ class DigitalVersatileDisc {
     }
 }
 
-var dvd = new DigitalVersatileDisc(document.getElementById("dvdCanvas"));
+var dvd = new DigitalVersatileDisc("dvdCanvas");
+
 function loop() {
     window.requestAnimationFrame(loop);
     dvd.draw_frame();
