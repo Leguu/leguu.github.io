@@ -40,13 +40,15 @@ class Enemy extends Entity {
 
         super(
             canvas_name,
-            Math.random() * 4 + 2,
+            Math.random() * 6 + 2,
             Math.random() * 2 * Math.PI,
-            Math.random() * 700 + 20,
-            Math.random() * 500 + 20,
-            20,
+            0, 0, // Placeholder x and y values
+            Math.random() * 5 + 20,
             colours[Math.floor(Math.random() * 2.99)]
         );
+
+        this.x = Math.random() * (this.canvas.width - 2 * this.radius) + this.radius;
+        this.y = Math.random() * (this.canvas.height - 2 * this.radius) + this.radius;
     }
 
     update_position() {
@@ -149,13 +151,16 @@ class Player extends Entity {
 }
 
 class GameManager {
-    constructor(canvas_name, player) {
+    constructor(canvas_name) {
         this.canvas = document.getElementById(canvas_name);
         this.context = this.canvas.getContext("2d");
 
         this.enemies = [];
-        for(let i = 0; i < 10; i++) this.enemies.push(new Enemy(canvas_name));
-        this.player = player;
+        let max_enemies = Math.random() * 5 + 10;
+        document.getElementById("maxEnemies").innerHTML = `Max score: ${Math.floor(max_enemies)}`;
+        for(let i = 0; i < max_enemies; i++) this.enemies.push(new Enemy(canvas_name));
+
+        this.player = new Player(canvas_name);
     }
 
     is_colliding(entity1, entity2) {
@@ -170,6 +175,7 @@ class GameManager {
     }
 
     run() {
+        window.requestAnimationFrame(this.run.bind(this));
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.enemies.forEach(function(enemy) {
@@ -188,12 +194,5 @@ class GameManager {
     }
 }
 
-let player = new Player("collisionCanvas");
-let gm = new GameManager("collisionCanvas", player);
-
-function loop() {
-    window.requestAnimationFrame(loop);
-    gm.run();
-}
-
-loop();
+new GameManager("collisionCanvas")
+    .run();
