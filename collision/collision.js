@@ -1,7 +1,7 @@
 class Entity {
-    constructor(canvas, speed, direction, x, y, radius) {
-        this.canvas = canvas;
-        this.context = canvas.getContext("2d");
+    constructor(canvas_name, speed, direction, x, y, radius) {
+        this.canvas = document.getElementById(canvas_name);
+        this.context = this.canvas.getContext("2d");
 
         this.speed = speed;
         this.update_bearing(direction);
@@ -40,8 +40,8 @@ class Entity {
 
 
 class Player extends Entity {
-    constructor(canvas) {
-        super(canvas, 15, 0, 400, 300, 20);
+    constructor(canvasName) {
+        super(canvasName, 15, 0, 400, 300, 20);
 
         this.pressed = new Map;
         this.pressed.set("w", false)
@@ -97,7 +97,8 @@ class Player extends Entity {
     }
 }
 
-let player = new Player(document.getElementById("collisionCanvas"));
+let player = new Player("collisionCanvas");
+
 function loop() {
     window.requestAnimationFrame(loop);
     player.draw_frame();
