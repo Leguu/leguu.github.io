@@ -41,17 +41,18 @@ class Entity {
 
 class Player extends Entity {
     constructor(canvas) {
-        super(canvas, 5, 0, 400, 300, 20);
+        super(canvas, 10, 0, 400, 300, 20);
 
         this.keys_pressed = 0;
 
         this.allowed = ["w", "a", "s", "d"];
 
-        this.pressed = {};
-        this.pressed["w"] = false;
-        this.pressed["a"] = false;
-        this.pressed["s"] = false;
-        this.pressed["d"] = false;
+        this.pressed = {
+            "w": false,
+            "a": false,
+            "s": false,
+            "d": false
+        };
 
         window.addEventListener('keydown', this.key_down.bind(this));
         window.addEventListener('keyup', this.key_up.bind(this));
@@ -64,44 +65,38 @@ class Player extends Entity {
             !this.pressed["s"] &&
             !this.pressed["d"]
         ) { return };
+
+        if(this.pressed["w"]) { this.direction += Math.PI / 2 };
+        if(this.pressed["a"]) { this.direction += Math.PI };
+        if(this.pressed["s"]) { this.direction += 3 / 2 * Math.PI };
+        if(this.pressed["d"]) { this.pressed["w"] ? this.direction += 0 : this.direction += 2 * Math.PI };
+
+        this.direction /= this.keys_pressed;
+
         this.update_bearing(this.direction);
         super.update_position();
+
+        if(this.x + this.radius > this.canvas.width || this.x - this.radius < 0) {
+            this.x -= this.x_speed;
+        }
+        if(this.y + this.radius > this.canvas.height || this.y - this.radius < 0) {
+            this.y += this.y_speed;
+        }
+
+        this.direction = 0;
     }
 
     key_down(event) {
         if(!this.allowed.includes(event.key)) { return };
         if(this.pressed[event.key]) { return };
 
-        switch(event.key) {
-            case "w": this.direction += Math.PI / 2;        break;
-            case "a": this.direction += Math.PI;            break;
-            case "s": this.direction += 3 / 2 * Math.PI;    break;
-            case "d": this.pressed["w"] ? this.direction += 0 : this.direction += 2 * Math.PI;
-        };
-
         this.pressed[event.key] = true;
-
         this.keys_pressed++;
-        this.direction /= this.keys_pressed;
-
-        console.log(`KEY_DOWN: Pressed: ${this.keys_pressed}, Direction: ${this.direction}`);
-        console.log(`x_speed: ${this.x_speed}`);
-        console.log(`y_speed: ${this.y_speed}`);
     }
 
     key_up(event) {
         if(!this.allowed.includes(event.key)) { return };
-
-        this.direction *= this.keys_pressed;
         this.keys_pressed--;
-
-        switch(event.key) {
-            case "w": this.direction -= Math.PI / 2;        break;
-            case "a": this.direction -= Math.PI;            break;
-            case "s": this.direction -= (3 / 2) * Math.PI;  break;
-            case "d": this.pressed["w"] ? this.direction -= 0 : this.direction -= 2 * Math.PI;
-        };
-
         this.pressed[event.key] = false;
     }
 }
