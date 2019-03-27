@@ -40,15 +40,9 @@ class DigitalVersatileDisc {
 }
 
 var dvd = new DigitalVersatileDisc(document.getElementById("dvdCanvas"));
-var dvd2 = new DigitalVersatileDisc(document.getElementById("dvdCanvas"));
-var dvd3 = new DigitalVersatileDisc(document.getElementById("dvdCanvas"));
-var dvd4 = new DigitalVersatileDisc(document.getElementById("dvdCanvas"));
 function loop() {
     window.requestAnimationFrame(loop);
     dvd.draw_frame();
-    dvd2.draw_frame();
-    dvd3.draw_frame();
-    dvd4.draw_frame();
 }
 
 loop();
