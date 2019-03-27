@@ -41,63 +41,59 @@ class Entity {
 
 class Player extends Entity {
     constructor(canvas) {
-        super(canvas, 10, 0, 400, 300, 20);
+        super(canvas, 15, 0, 400, 300, 20);
+
+        this.pressed = new Map;
+        this.pressed.set("w", false)
+        this.pressed.set("a", false)
+        this.pressed.set("s", false)
+        this.pressed.set("d", false)
 
         this.keys_pressed = 0;
-
-        this.allowed = ["w", "a", "s", "d"];
-
-        this.pressed = {
-            "w": false,
-            "a": false,
-            "s": false,
-            "d": false
-        };
 
         window.addEventListener('keydown', this.key_down.bind(this));
         window.addEventListener('keyup', this.key_up.bind(this));
     }
 
     update_position() {
-        if(
-            !this.pressed["w"] &&
-            !this.pressed["a"] &&
-            !this.pressed["s"] &&
-            !this.pressed["d"]
+        if( !this.pressed.get("w") &&
+            !this.pressed.get("a") &&
+            !this.pressed.get("s") &&
+            !this.pressed.get("d")
         ) { return };
 
-        if(this.pressed["w"]) { this.direction += Math.PI / 2 };
-        if(this.pressed["a"]) { this.direction += Math.PI };
-        if(this.pressed["s"]) { this.direction += 3 / 2 * Math.PI };
-        if(this.pressed["d"]) { this.pressed["w"] ? this.direction += 0 : this.direction += 2 * Math.PI };
-
+        if(this.pressed.get("w")) { this.direction += Math.PI / 2 };
+        if(this.pressed.get("a")) { this.direction += Math.PI };
+        if(this.pressed.get("s")) { this.direction += 3 / 2 * Math.PI };
+        if(this.pressed.get("d")) { this.pressed.get("w") ? this.direction += 0 : this.direction += 2 * Math.PI };
         this.direction /= this.keys_pressed;
-
-        this.update_bearing(this.direction);
-        super.update_position();
 
         if(this.x + this.radius > this.canvas.width || this.x - this.radius < 0) {
             this.x -= this.x_speed;
         }
+
         if(this.y + this.radius > this.canvas.height || this.y - this.radius < 0) {
             this.y += this.y_speed;
         }
+
+        this.update_bearing(this.direction);
+        super.update_position();
 
         this.direction = 0;
     }
 
     key_down(event) {
-        if(!this.allowed.includes(event.key)) { return };
-        if(this.pressed[event.key]) { return };
+        if(!Array.from(this.pressed.keys()).includes(event.key)) { return };
+        if(this.pressed.get(event.key)) { return };
 
-        this.pressed[event.key] = true;
+        this.pressed.set(event.key, true);
         this.keys_pressed++;
     }
 
     key_up(event) {
-        if(!this.allowed.includes(event.key)) { return };
+        if(!Array.from(this.pressed.keys()).includes(event.key)) { return };
+        this.pressed.set(event.key, false);
         this.keys_pressed--;
-        this.pressed[event.key] = false;
     }
 }
 
