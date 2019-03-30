@@ -35,7 +35,6 @@ class Entity {
 
 class Enemy extends Entity {
     constructor(canvas_name) {
-        // GREEN SPAWNS MOST OFTEN - FIX
         let colours = ["red", "green", "blue"];
 
         super(
@@ -83,11 +82,12 @@ class Player extends Entity {
 
     add_point() {
         this.points += 1;
-        this.radius += this.points * 3;
-        if(this.x + this.radius > this.canvas.width) this.x -= this.radius;
-        if(this.x - this.radius < 0) this.x += this.radius;
-        if(this.y + this.radius > this.canvas.height) this.y -= this.radius;
-        if(this.y - this.radius < 0) this.y += this.radius;
+        let size_increase = this.points * 3;
+        this.radius += size_increase;
+        if(this.x + this.radius > this.canvas.width) this.x -= size_increase;
+        if(this.x - this.radius < 0) this.x += size_increase;
+        if(this.y + this.radius > this.canvas.height) this.y -= size_increase;
+        if(this.y - this.radius < 0) this.y += size_increase;
     }
 
     remove_point() {
@@ -111,14 +111,14 @@ class Player extends Entity {
 
         this.direction /= this.keys_pressed;
 
+        this.update_bearing(this.direction);
+        super.update_position();
+
         if(this.x + this.radius > this.canvas.width || this.x - this.radius < 0)
             this.x -= this.x_speed;
 
         if(this.y + this.radius > this.canvas.height || this.y - this.radius < 0)
             this.y += this.y_speed;
-
-        this.update_bearing(this.direction);
-        super.update_position();
 
         this.direction = 0;
     }
