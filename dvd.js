@@ -8,7 +8,7 @@ class DigitalVersatileDisc {
 
     this.image = new Image();
     this.image.src =
-      "https://upload.wikimedia.org/wikipedia/en/1/18/Dvd-video-logo.svg";
+      "https://upload.wikimedia.org/wikipedia/commons/9/9b/DVD_logo.svg";
 
     this.x_size = this.y_size = 100;
     this.x = Math.random() * (this.canvas.width - this.x_size);
